@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function addNewCity() {
+            let name = $('#name').val();
+            let area = $('#area').val();
+            let popuplation = $('#population').val();
+            let gdp = $('#gdp').val();
+            let description = $('#description').val();
+            let nation =$('#nation').val();
+            let newCity = {
+                name: name,
+                area: area,
+                population: population,
+                gdp: gdp,
+                description: description,
+                nation: {id: nation}
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                data: JSON.stringify(newNation),
+                url: "http://localhost:8080/cities/create",
+                success: successHandler
+            });
+            event.preventDefault();
+        }
+
+        function successHandler() {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/cities/list",
+                success: function (data) {
+                    let content = '    <tr>\n' +
+                        '        <td>Name</td>\n' +
+                        '        <td>Area</td>\n' +
+                        '        <td>Population</td>\n' +
+                        '        <td>GDP</td>\n' +
+                        '        <td>Description</td>\n' +
+                        '        <td>Nation</td>\n' +
+                        '        <td>Edit</td>\n' +
+                        '        <td>Delete</td>\n' +
+                        '    </tr>';
+                    for (let i = 0; i < data.length; i++) {
+                        content += getCity(data[i]);
+                    }
+                    document.getElementById('cityList').innerHTML = content;
+                }
+            });
+        }
+
+        function getCity(city) {
+            return `<tr>`+
+                `<td >${city.name}</td>`+
+                `<td >${city.area}</td>`+
+                `<td >${city.population}</td>`+
+                `<td >${city.gdp}</td>`+
+                `<td >${city.description}</td>`+
+                `<td >${city.nation}</td><td >${city.nation?.name}</td>`+
+                `<td><button value="${city.id}" >Edit</button></td>`+
+                `<td><button value="${city.id}" >Delete</button></td>`+
+                `</tr>`;
+        }
+    </script>
+</head>
+
+<body>
+
+
+
+</body>
+</html>
