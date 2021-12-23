@@ -4,76 +4,50 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        function addNewCity() {
-            let name = $('#name').val();
-            let area = $('#area').val();
-            let popuplation = $('#population').val();
-            let gdp = $('#gdp').val();
-            let description = $('#description').val();
-            let nation =$('#nation').val();
-            let newCity = {
-                name: name,
-                area: area,
-                population: population,
-                gdp: gdp,
-                description: description,
-                nation: {id: nation}
-            }
-            $.ajax({
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                type: "POST",
-                data: JSON.stringify(newNation),
-                url: "http://localhost:8080/cities/create",
-                success: successHandler
-            });
-            event.preventDefault();
-        }
-
-        function successHandler() {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:8080/cities/list",
-                success: function (data) {
-                    let content = '    <tr>\n' +
-                        '        <td>Name</td>\n' +
-                        '        <td>Area</td>\n' +
-                        '        <td>Population</td>\n' +
-                        '        <td>GDP</td>\n' +
-                        '        <td>Description</td>\n' +
-                        '        <td>Nation</td>\n' +
-                        '        <td>Edit</td>\n' +
-                        '        <td>Delete</td>\n' +
-                        '    </tr>';
-                    for (let i = 0; i < data.length; i++) {
-                        content += getCity(data[i]);
-                    }
-                    document.getElementById('cityList').innerHTML = content;
-                }
-            });
-        }
-
-        function getCity(city) {
-            return `<tr>`+
-                `<td >${city.name}</td>`+
-                `<td >${city.area}</td>`+
-                `<td >${city.population}</td>`+
-                `<td >${city.gdp}</td>`+
-                `<td >${city.description}</td>`+
-                `<td >${city.nation}</td><td >${city.nation?.name}</td>`+
-                `<td><button value="${city.id}" >Edit</button></td>`+
-                `<td><button value="${city.id}" >Delete</button></td>`+
-                `</tr>`;
-        }
-    </script>
+    <script src="frontend.js"></script>
 </head>
-
 <body>
+<h2>Danh sách thành phố</h2>
+<button>Thêm Thành phố</button>
+<table border="1" id="cityList"></table>
+</div>
+<div>
+    <table>
+        <tr>
+            <td>Tên:</td>
+            <td><input type="text" id="name" placeholder="Tên Thành phố"></td>
+        </tr>
+        <tr>
+            <td>Quốc gia:</td>
+            <td>
+                <select id="nation">
 
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Diện tích:</td>
+            <td><input type="text" id="area" placeholder="Diện tích"></td>
+        </tr>
+        <tr>
+            <td>Dân số:</td>
+            <td><input type="text" id="population" placeholder="Dân số"></td>
+        </tr>
+        <tr>
+            <td>GDP:</td>
+            <td><input type="text" id="gdp" placeholder="GDP"></td>
+        </tr>
+        <tr>
+            <td>Giới thiệu:</td>
+            <td><textarea type="text" id="description" placeholder="giới thiệu"></textarea></td>
+        </tr>
 
+    </table>
+    <div >
+        <button type="submit">Thoát</button>
+        <button type="submit" class="btn btn-primary" onclick="addNewCity()">Cập nhật</button>
+    </div>
+</div>
 
 </body>
 </html>
